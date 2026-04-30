@@ -2,7 +2,8 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Contador</title>
+<title>Tiempo de sobriedad</title>
+
 <style>
 body {
   margin: 0;
@@ -14,45 +15,80 @@ body {
   height: 100vh;
 }
 
+/* CONTENEDOR */
 .container {
-  background: white;
-  padding: 25px;
-  border-radius: 20px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 25px;
   text-align: center;
   width: 320px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 
-.logo {
-  width: 80px;
-  border-radius: 50%;
+/* TITULO */
+h1 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #1e7f3f;
 }
 
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 15px;
+  gap: 12px;
 }
 
+/* CAJAS */
 .box {
-  background: #1e7f3f;
+  background: linear-gradient(145deg, #1e7f3f, #2e9e55);
   color: white;
-  padding: 10px;
-  border-radius: 10px;
+  padding: 12px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
 }
 
+.box:hover {
+  transform: scale(1.05);
+}
+
+/* NUMEROS */
 .numero {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
+/* TEXTO */
 .label {
   font-size: 0.7rem;
+  opacity: 0.8;
 }
 
+/* FRASE */
 .frase {
-  margin-top: 10px;
+  margin-top: 15px;
   font-style: italic;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* FOOTER */
+footer {
+  margin-top: 10px;
+  font-size: 0.7rem;
+  color: #666;
+}
+
+/* ANIMACIÓN SUAVE */
+.fade {
+  animation: fade 0.5s ease-in-out;
+}
+
+@keyframes fade {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
 }
 </style>
 </head>
@@ -60,23 +96,26 @@ body {
 <body>
 
 <div class="container">
-<img src="logo.png" class="logo">
 
-<h3>Padrino Carlos Sampayo</h3>
+  <h1>Tiempo de sobriedad<br><strong>Padrino Carlos Sampayo</strong></h1>
 
-<div class="grid">
-<div class="box"><div id="a" class="numero"></div><div class="label">Años</div></div>
-<div class="box"><div id="m" class="numero"></div><div class="label">Meses</div></div>
-<div class="box"><div id="d" class="numero"></div><div class="label">Días</div></div>
-<div class="box"><div id="h" class="numero"></div><div class="label">Horas</div></div>
-<div class="box"><div id="min" class="numero"></div><div class="label">Min</div></div>
-<div class="box"><div id="s" class="numero"></div><div class="label">Seg</div></div>
-</div>
+  <div class="grid">
+    <div class="box"><div id="a" class="numero"></div><div class="label">Años</div></div>
+    <div class="box"><div id="m" class="numero"></div><div class="label">Meses</div></div>
+    <div class="box"><div id="d" class="numero"></div><div class="label">Días</div></div>
+    <div class="box"><div id="h" class="numero"></div><div class="label">Horas</div></div>
+    <div class="box"><div id="min" class="numero"></div><div class="label">Minutos</div></div>
+    <div class="box"><div id="s" class="numero"></div><div class="label">Segundos</div></div>
+  </div>
 
-<div class="frase" id="frase"></div>
+  <div class="frase" id="frase"></div>
+
+  <footer>Desde el 5 de mayo de 2021</footer>
+
 </div>
 
 <script>
+// CALCULO EXACTO
 function calc(inicio, ahora){
 let a=ahora.getFullYear()-inicio.getFullYear();
 let m=ahora.getMonth()-inicio.getMonth();
@@ -96,8 +135,16 @@ if(h<0){h+=24;d--;}
 return{a,m,d,h,min,s};
 }
 
+// ACTUALIZAR
 function update(){
-let t=calc(new Date("2021-05-05"), new Date());
+let t=calc(new Date("2021-05-05T00:00:00"), new Date());
+
+["a","m","d","h","min","s"].forEach((id,i)=>{
+  document.getElementById(id).classList.remove("fade");
+  void document.getElementById(id).offsetWidth;
+  document.getElementById(id).classList.add("fade");
+});
+
 document.getElementById("a").innerText=t.a;
 document.getElementById("m").innerText=t.m;
 document.getElementById("d").innerText=t.d;
@@ -105,10 +152,26 @@ document.getElementById("h").innerText=t.h;
 document.getElementById("min").innerText=t.min;
 document.getElementById("s").innerText=t.s;
 }
-setInterval(update,1000);update();
 
-const frases=["Un día a la vez","Solo por hoy","Sigue adelante","Vale la pena"];
-document.getElementById("frase").innerText=frases[new Date().getDate()%frases.length];
+setInterval(update,1000);
+update();
+
+// FRASES
+const frases = [
+"Solo por hoy.",
+"Un día a la vez.",
+"Progreso, no perfección.",
+"La sobriedad es libertad.",
+"Hoy elijo estar bien.",
+"Sigue adelante.",
+"Vale la pena.",
+"Disciplina vence excusas.",
+"Paso a paso.",
+"Hoy cuenta."
+];
+
+document.getElementById("frase").innerText =
+frases[new Date().getDate() % frases.length];
 </script>
 
 </body>
