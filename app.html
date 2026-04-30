@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Contador</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f1f14, #1e7f3f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 320px;
+}
+
+.logo {
+  width: 80px;
+  border-radius: 50%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.box {
+  background: #1e7f3f;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.numero {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 0.7rem;
+}
+
+.frase {
+  margin-top: 10px;
+  font-style: italic;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<img src="logo.png" class="logo">
+
+<h3>Padrino Carlos Sampayo</h3>
+
+<div class="grid">
+<div class="box"><div id="a" class="numero"></div><div class="label">Años</div></div>
+<div class="box"><div id="m" class="numero"></div><div class="label">Meses</div></div>
+<div class="box"><div id="d" class="numero"></div><div class="label">Días</div></div>
+<div class="box"><div id="h" class="numero"></div><div class="label">Horas</div></div>
+<div class="box"><div id="min" class="numero"></div><div class="label">Min</div></div>
+<div class="box"><div id="s" class="numero"></div><div class="label">Seg</div></div>
+</div>
+
+<div class="frase" id="frase"></div>
+</div>
+
+<script>
+function calc(inicio, ahora){
+let a=ahora.getFullYear()-inicio.getFullYear();
+let m=ahora.getMonth()-inicio.getMonth();
+let d=ahora.getDate()-inicio.getDate();
+
+if(d<0){m--;d+=new Date(ahora.getFullYear(),ahora.getMonth(),0).getDate();}
+if(m<0){a--;m+=12;}
+
+let h=ahora.getHours()-inicio.getHours();
+let min=ahora.getMinutes()-inicio.getMinutes();
+let s=ahora.getSeconds()-inicio.getSeconds();
+
+if(s<0){s+=60;min--;}
+if(min<0){min+=60;h--;}
+if(h<0){h+=24;d--;}
+
+return{a,m,d,h,min,s};
+}
+
+function update(){
+let t=calc(new Date("2021-05-05"), new Date());
+document.getElementById("a").innerText=t.a;
+document.getElementById("m").innerText=t.m;
+document.getElementById("d").innerText=t.d;
+document.getElementById("h").innerText=t.h;
+document.getElementById("min").innerText=t.min;
+document.getElementById("s").innerText=t.s;
+}
+setInterval(update,1000);update();
+
+const frases=["Un día a la vez","Solo por hoy","Sigue adelante","Vale la pena"];
+document.getElementById("frase").innerText=frases[new Date().getDate()%frases.length];
+</script>
+
+</body>
+</html>
